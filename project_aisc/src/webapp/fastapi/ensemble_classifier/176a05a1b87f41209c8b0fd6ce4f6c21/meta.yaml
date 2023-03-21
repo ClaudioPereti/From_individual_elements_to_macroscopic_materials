@@ -1,0 +1,15 @@
+artifact_uri: /home/fis00claupere/AISC/project_aisc/data/experiments/mlruns/2/176a05a1b87f41209c8b0fd6ce4f6c21/artifacts
+end_time: 1667214774901
+entry_point_name: ''
+experiment_id: '2'
+lifecycle_stage: active
+name: ''
+run_id: 176a05a1b87f41209c8b0fd6ce4f6c21
+run_uuid: 176a05a1b87f41209c8b0fd6ce4f6c21
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1667214524490
+status: 3
+tags: []
+user_id: fis00claupere

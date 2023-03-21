@@ -1,0 +1,198 @@
+#Yaml file containing DeepSet regressors with latent dimension in [1,2,40,80,200,400,800]
+
+input shape: &input_shape 33
+linear input shape: &linear_input_shape 32
+latent dim: &latent_dim 1
+
+phi setup: &phi
+  input: *input_shape
+  layers:
+    - {'units': 300,'activation':'relu'}
+    - {'units': 300,'activation':'relu'}
+    - {'units': 300,'activation':'relu'}
+  output: {'units': *latent_dim, 'activation':'linear', 'activity_regularizer':'l1'}
+
+regressor rho setup: &rho
+  input: *latent_dim
+  layers:
+    - {'units': 300,'activation':'relu'}
+    - {'units': 300,'activation':'relu'}
+    - {'units': 300,'activation':'relu'}
+  output: {'units': 1, 'activation':'relu', 'activity_regularizer':'l1'}
+
+regressor setup: &setup
+  optimizer: !!python/name:tensorflow.keras.optimizers.Adam
+  learning rate: 0.001
+  loss: 'mean_squared_error'
+  metrics:
+    - 'mean_absolute_error'
+    - !!python/name:tensorflow.keras.metrics.RootMeanSquaredError
+---
+
+input shape: &input_shape 33
+linear input shape: &linear_input_shape 32
+latent dim: &latent_dim 2
+
+phi setup: &phi
+  input: *input_shape
+  layers:
+    - {'units': 300,'activation':'relu'}
+    - {'units': 300,'activation':'relu'}
+    - {'units': 300,'activation':'relu'}
+  output: {'units': *latent_dim, 'activation':'linear', 'activity_regularizer':'l1'}
+
+regressor rho setup: &rho
+  input: *latent_dim
+  layers:
+    - {'units': 300,'activation':'relu'}
+    - {'units': 300,'activation':'relu'}
+    - {'units': 300,'activation':'relu'}
+  output: {'units': 1, 'activation':'relu', 'activity_regularizer':'l1'}
+
+regressor setup: &setup
+  optimizer: !!python/name:tensorflow.keras.optimizers.Adam
+  learning rate: 0.001
+  loss: 'mean_squared_error'
+  metrics:
+    - 'mean_absolute_error'
+    - !!python/name:tensorflow.keras.metrics.RootMeanSquaredError
+---
+input shape: &input_shape 33
+linear input shape: &linear_input_shape 32
+latent dim: &latent_dim 40
+
+phi setup: &phi
+  input: *input_shape
+  layers:
+    - {'units': 300,'activation':'relu'}
+    - {'units': 300,'activation':'relu'}
+    - {'units': 300,'activation':'relu'}
+  output: {'units': *latent_dim, 'activation':'linear', 'activity_regularizer':'l1'}
+
+regressor rho setup: &rho
+  input: *latent_dim
+  layers:
+    - {'units': 300,'activation':'relu'}
+    - {'units': 300,'activation':'relu'}
+    - {'units': 300,'activation':'relu'}
+  output: {'units': 1, 'activation':'relu', 'activity_regularizer':'l1'}
+
+regressor setup: &setup
+  optimizer: !!python/name:tensorflow.keras.optimizers.Adam
+  learning rate: 0.001
+  loss: 'mean_squared_error'
+  metrics:
+    - 'mean_absolute_error'
+    - !!python/name:tensorflow.keras.metrics.RootMeanSquaredError
+---
+input shape: &input_shape 33
+linear input shape: &linear_input_shape 32
+latent dim: &latent_dim 80
+
+phi setup: &phi
+  input: *input_shape
+  layers:
+    - {'units': 300,'activation':'relu'}
+    - {'units': 300,'activation':'relu'}
+    - {'units': 300,'activation':'relu'}
+  output: {'units': *latent_dim, 'activation':'linear', 'activity_regularizer':'l1'}
+
+regressor rho setup: &rho
+  input: *latent_dim
+  layers:
+    - {'units': 300,'activation':'relu'}
+    - {'units': 300,'activation':'relu'}
+    - {'units': 300,'activation':'relu'}
+  output: {'units': 1, 'activation':'relu', 'activity_regularizer':'l1'}
+
+regressor setup: &setup
+  optimizer: !!python/name:tensorflow.keras.optimizers.Adam
+  learning rate: 0.001
+  loss: 'mean_squared_error'
+  metrics:
+    - 'mean_absolute_error'
+    - !!python/name:tensorflow.keras.metrics.RootMeanSquaredError
+---
+input shape: &input_shape 33
+linear input shape: &linear_input_shape 32
+latent dim: &latent_dim 200
+
+phi setup: &phi
+  input: *input_shape
+  layers:
+    - {'units': 300,'activation':'relu'}
+    - {'units': 300,'activation':'relu'}
+    - {'units': 300,'activation':'relu'}
+  output: {'units': *latent_dim, 'activation':'linear', 'activity_regularizer':'l1'}
+
+regressor rho setup: &rho
+  input: *latent_dim
+  layers:
+    - {'units': 300,'activation':'relu'}
+    - {'units': 300,'activation':'relu'}
+    - {'units': 300,'activation':'relu'}
+  output: {'units': 1, 'activation':'relu', 'activity_regularizer':'l1'}
+
+regressor setup: &setup
+  optimizer: !!python/name:tensorflow.keras.optimizers.Adam
+  learning rate: 0.001
+  loss: 'mean_squared_error'
+  metrics:
+    - 'mean_absolute_error'
+    - !!python/name:tensorflow.keras.metrics.RootMeanSquaredError
+---
+input shape: &input_shape 33
+linear input shape: &linear_input_shape 32
+latent dim: &latent_dim 400
+
+phi setup: &phi
+  input: *input_shape
+  layers:
+    - {'units': 300,'activation':'relu'}
+    - {'units': 300,'activation':'relu'}
+    - {'units': 300,'activation':'relu'}
+  output: {'units': *latent_dim, 'activation':'linear', 'activity_regularizer':'l1'}
+
+regressor rho setup: &rho
+  input: *latent_dim
+  layers:
+    - {'units': 300,'activation':'relu'}
+    - {'units': 300,'activation':'relu'}
+    - {'units': 300,'activation':'relu'}
+  output: {'units': 1, 'activation':'relu', 'activity_regularizer':'l1'}
+
+regressor setup: &setup
+  optimizer: !!python/name:tensorflow.keras.optimizers.Adam
+  learning rate: 0.001
+  loss: 'mean_squared_error'
+  metrics:
+    - 'mean_absolute_error'
+    - !!python/name:tensorflow.keras.metrics.RootMeanSquaredError
+---
+input shape: &input_shape 33
+linear input shape: &linear_input_shape 32
+latent dim: &latent_dim 800
+
+phi setup: &phi
+  input: *input_shape
+  layers:
+    - {'units': 300,'activation':'relu'}
+    - {'units': 300,'activation':'relu'}
+    - {'units': 300,'activation':'relu'}
+  output: {'units': *latent_dim, 'activation':'linear', 'activity_regularizer':'l1'}
+
+regressor rho setup: &rho
+  input: *latent_dim
+  layers:
+    - {'units': 300,'activation':'relu'}
+    - {'units': 300,'activation':'relu'}
+    - {'units': 300,'activation':'relu'}
+  output: {'units': 1, 'activation':'relu', 'activity_regularizer':'l1'}
+
+regressor setup: &setup
+  optimizer: !!python/name:tensorflow.keras.optimizers.Adam
+  learning rate: 0.001
+  loss: 'mean_squared_error'
+  metrics:
+    - 'mean_absolute_error'
+    - !!python/name:tensorflow.keras.metrics.RootMeanSquaredError

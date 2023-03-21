@@ -1,0 +1,98 @@
+schema: '2.0'
+stages:
+  prepare:
+    cmd: python project_aisc/src/features/preprocessing.py
+    deps:
+    - path: project_aisc/data/raw/garbage_in_50_000.csv
+      md5: 2c8d079babb0b27b7acc363057267abd
+      size: 926997
+    - path: project_aisc/data/raw/supercon.csv
+      md5: 309b40f4bc9ce53f32f42b63a6cc9463
+      size: 6718155
+    - path: project_aisc/src/features/preprocessing.py
+      md5: 9a2a5aa7ddbec2068fed21a97521729a
+      size: 3870
+    params:
+      project_aisc/config/preprocessing.yaml:
+        garbagein_data: garbagein.csv
+        other_data:
+        - hosono.csv
+        - ima.csv
+        padding: 12
+        problem: regression
+        seed: 42
+        supercon_data: supercon.csv
+        test_split: 0.2
+        val_split: 0.2
+    outs:
+    - path: project_aisc/data/processed/Y_hosono.npy
+      md5: 8bfed1ee8af8aaa57c1191c4c4aed072
+      size: 1784
+    - path: project_aisc/data/processed/hosono.npy
+      md5: c29fcaba170fbc06257da2ff6767f230
+      size: 655904
+    - path: project_aisc/data/processed/ima.npy
+      md5: fceddb020624f933401538f99bf5c05f
+      size: 3697184
+    - path: project_aisc/data/processed/test/X_test.npy
+      md5: 84142c3aeeb3ac1050290f719f3d2df2
+      size: 10384832
+    - path: project_aisc/data/processed/test/Y_test.npy
+      md5: 1c295f693aaa374a6ea19682313e0083
+      size: 26352
+    - path: project_aisc/data/processed/train/X_train.npy
+      md5: 1c7c17983be64d48859d90e6d59133e0
+      size: 33222944
+    - path: project_aisc/data/processed/train/Y_train.npy
+      md5: 81e09665ed2c7c94971563c1f715aff2
+      size: 84024
+    - path: project_aisc/data/processed/val/X_val.npy
+      md5: 6830134c399138538de39ff49d12a0f3
+      size: 8306624
+    - path: project_aisc/data/processed/val/Y_val.npy
+      md5: 9394279d63a0b2a6306fbe8d180acfe0
+      size: 21104
+  train:
+    cmd: python project_aisc/src/laboratory/train_model.py -model linear regressor
+    deps:
+    - path: project_aisc/config/model_config.yaml
+      md5: 511376c7e30dbd71cc14463a61b9a29d
+      size: 2326
+    - path: project_aisc/data/processed/train/X_train.npy
+      md5: 1c7c17983be64d48859d90e6d59133e0
+      size: 33222944
+    - path: project_aisc/data/processed/train/Y_train.npy
+      md5: 81e09665ed2c7c94971563c1f715aff2
+      size: 84024
+    - path: project_aisc/data/processed/val/X_val.npy
+      md5: 6830134c399138538de39ff49d12a0f3
+      size: 8306624
+    - path: project_aisc/data/processed/val/Y_val.npy
+      md5: 9394279d63a0b2a6306fbe8d180acfe0
+      size: 21104
+    - path: project_aisc/src/laboratory/train_model.py
+      md5: 989dfbb7d37be0667e7efbfd1e919fdb
+      size: 3801
+    outs:
+    - path: active_experiments.json
+      md5: 83a15d19880584ab0c62dddfa3ce6de2
+      size: 68
+  evaluate:
+    cmd: python project_aisc/src/laboratory/evaluate.py  -problem regression --no-save
+      all
+    deps:
+    - path: active_experiments.json
+      md5: 83a15d19880584ab0c62dddfa3ce6de2
+      size: 68
+    - path: project_aisc/data/processed/Y_hosono.npy
+      md5: 8bfed1ee8af8aaa57c1191c4c4aed072
+      size: 1784
+    - path: project_aisc/data/processed/hosono.npy
+      md5: c29fcaba170fbc06257da2ff6767f230
+      size: 655904
+    - path: project_aisc/data/processed/ima.npy
+      md5: fceddb020624f933401538f99bf5c05f
+      size: 3697184
+    - path: project_aisc/src/laboratory/evaluate.py
+      md5: afcaab1d8e74745dec5fe6fcf74b3beb
+      size: 5037

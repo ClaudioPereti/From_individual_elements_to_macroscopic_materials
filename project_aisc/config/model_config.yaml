@@ -1,0 +1,82 @@
+input shape: &input_shape 33
+linear input shape: &linear_input_shape 32
+latent dim: &latent_dim 300
+
+phi setup: &phi
+  input: *input_shape
+  layers:
+    - {'units': 300,'activation':'relu'}
+    - {'units': 300,'activation':'relu'}
+    - {'units': 300,'activation':'relu'}
+  output: {'units': *latent_dim, 'activation':'linear', 'activity_regularizer':'l1'}
+
+regressor rho setup: &rho
+  input: *latent_dim
+  layers:
+    - {'units': 300,'activation':'relu'}
+    - {'units': 300,'activation':'relu'}
+    - {'units': 300,'activation':'relu'}
+  output: {'units': 1, 'activation':'relu', 'activity_regularizer':'l1'}
+
+regressor setup: &setup
+  optimizer: !!python/name:tensorflow.keras.optimizers.Adam
+  learning rate: 0.001
+  loss: 'mean_squared_error'
+  metrics:
+    - 'mean_absolute_error'
+    - !!python/name:tensorflow.keras.metrics.RootMeanSquaredError
+
+
+classifier rho setup:
+  input: *latent_dim
+  layers:
+    - {'units': 300,'activation':'relu'}
+    - {'units': 300,'activation':'relu'}
+    - {'units': 300,'activation':'relu'}
+  output: {'units': 1, 'activation':'sigmoid', 'activity_regularizer':'l1'}
+
+
+classifier setup:
+  optimizer: !!python/name:tensorflow.keras.optimizers.Adam
+  learning rate: 0.001
+  loss: 'binary_crossentropy'
+  metrics:
+    - 'accuracy'
+    - !!python/name:tensorflow.keras.metrics.Precision
+
+linear phi setup:
+  input: *linear_input_shape
+  layers:
+    - {'units': 300,'activation':'relu'}
+    - {'units': 300,'activation':'relu'}
+    - {'units': 300,'activation':'relu'}
+  output: {'units': *latent_dim, 'activation':'linear', 'activity_regularizer':'l1'}
+
+neural network setup:
+  input: {'units':300,'input_shape': !!python/tuple [80,]}
+  layers:
+    - {'units': 300,'activation':'relu'}
+    - {'units': 300,'activation':'relu'}
+    - {'units': 300,'activation':'relu'}
+  output: {'units': 1, 'activation': 'relu', 'activity_regularizer': 'l1'}
+
+regressor neural network setup:
+  optimizer: !!python/name:tensorflow.keras.optimizers.Adam
+  learning rate: 0.001
+  loss: 'mean_squared_error'
+  metrics:
+    - 'mean_absolute_error'
+    - !!python/name:tensorflow.keras.metrics.RootMeanSquaredError
+
+train setup:
+  validation split: 0.2
+  test split: 0.2
+
+  fit setup:
+    epochs : 1
+    batch_size : 32
+
+  early stopping setup:
+    min_delta : 5
+    patience : 40
+    restore_best_weights: True

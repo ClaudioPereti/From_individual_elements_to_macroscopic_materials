@@ -1,0 +1,41 @@
+vars:
+  - project_aisc/config/preprocessing.yaml:problem
+  - model name: 'linear regressor'
+stages:
+  prepare:
+    cmd: python project_aisc/src/features/preprocessing.py
+    deps:
+      - project_aisc/data/raw/supercon.csv
+      - project_aisc/data/raw/garbage_in_50_000.csv
+      - project_aisc/src/features/preprocessing.py
+    params:
+      - project_aisc/config/preprocessing.yaml:
+    outs:
+      - project_aisc/data/processed/test/X_test.npy
+      - project_aisc/data/processed/test/Y_test.npy
+      - project_aisc/data/processed/train/X_train.npy
+      - project_aisc/data/processed/train/Y_train.npy
+      - project_aisc/data/processed/val/X_val.npy
+      - project_aisc/data/processed/val/Y_val.npy
+      - project_aisc/data/processed/hosono.npy
+      - project_aisc/data/processed/Y_hosono.npy
+      - project_aisc/data/processed/ima.npy
+  train:
+    cmd: python project_aisc/src/laboratory/train_model.py -model ${model name}
+    deps:
+      - project_aisc/data/processed/train/X_train.npy
+      - project_aisc/data/processed/train/Y_train.npy
+      - project_aisc/data/processed/val/X_val.npy
+      - project_aisc/data/processed/val/Y_val.npy
+      - project_aisc/src/laboratory/train_model.py
+      - project_aisc/config/model_config.yaml
+    outs:
+      - active_experiments.json
+  evaluate:
+    deps:
+      - project_aisc/src/laboratory/evaluate.py
+      - active_experiments.json
+      - project_aisc/data/processed/hosono.npy
+      - project_aisc/data/processed/Y_hosono.npy
+      - project_aisc/data/processed/ima.npy
+    cmd: python project_aisc/src/laboratory/evaluate.py  -problem ${problem} --no-save all

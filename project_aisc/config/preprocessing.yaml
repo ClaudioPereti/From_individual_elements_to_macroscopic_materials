@@ -1,0 +1,10 @@
+problem: regression
+supercon_data: supercon.csv
+garbagein_data: garbagein.csv
+test_split: 0.2
+val_split: 0.2
+seed: 42
+padding: 12
+other_data:
+  - hosono.csv
+  - ima.csv
