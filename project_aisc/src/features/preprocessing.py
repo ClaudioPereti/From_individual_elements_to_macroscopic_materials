@@ -1,5 +1,5 @@
 import pandas as pd
-
+import os
 from data import make_dataset
 from features import build_features
 import yaml
@@ -40,6 +40,18 @@ def preprocess_data(problem, supercon_data, garbagein_data, test_split, val_spli
 
     X, X_test, Y, Y_test = build_features.train_test_split(supercon_processed, tc, test_split, seed)
     X, X_val, Y, Y_val = build_features.train_test_split(X, Y, val_split, seed)
+
+
+    for _type in ["train","val","test"]:
+        folder_path = home_path + '/data/processed/' + _type
+        if not os.path.exists(folder_path):
+            try:
+                os.makedirs(folder_path)
+                print(f"Folder '{folder_path}' created successfully.")
+            except OSError as e:
+                print(f"Error creating folder '{folder_path}': {e}")
+        else:
+            print(f"Folder '{folder_path}' already exists.")
 
     np.save(home_path + '/data/processed/train/X_train.npy', np.array(X))
     np.save(home_path + '/data/processed/train/Y_train.npy', np.array(Y))
