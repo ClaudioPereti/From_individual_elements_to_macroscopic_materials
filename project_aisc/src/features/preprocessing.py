@@ -62,15 +62,18 @@ def preprocess_data(problem, supercon_data, garbagein_data, test_split, val_spli
 
     if other_data is not None:
         for data_name in other_data:
-            external_dataset = make_dataset.get_supercon(name="../external/" + data_name)
-            tc = None
-            if 'critical_temp' in external_dataset.columns:
-                tc = external_dataset['critical_temp']
-            supercon_processor = build_features.SuperConData(atom_processed, external_dataset, padding=padding)
-            supercon_processed = supercon_processor.get_dataset()
-            np.save(home_path + '/data/processed/' + data_name.replace('csv', 'npy'), np.array(supercon_processed))
-            if tc is not None:
-                np.save(home_path + '/data/processed/Y_' + data_name.replace('csv', 'npy'), np.array(tc))
+            try:
+                external_dataset = make_dataset.get_supercon(name="../external/" + data_name)
+                if 'critical_temp' in external_dataset.columns:
+                    tc = external_dataset['critical_temp']
+                supercon_processor = build_features.SuperConData(atom_processed, external_dataset, padding=padding)
+                supercon_processed = supercon_processor.get_dataset()
+                np.save(home_path + '/data/processed/' + data_name.replace('csv', 'npy'), np.array(supercon_processed))
+                if tc is not None:
+                    np.save(home_path + '/data/processed/Y_' + data_name.replace('csv', 'npy'), np.array(tc))
+            except FileNotFoundError:
+                print(f"No {data_name} data for testing purpose.\nSet value other_data to null in config file"
+                      " preprocessing.yaml or check if file are in external folder with csv extension.")
 
 
 if __name__ == '__main__':

@@ -17,9 +17,9 @@ stages:
       - project_aisc/data/processed/train/Y_train.npy
       - project_aisc/data/processed/val/X_val.npy
       - project_aisc/data/processed/val/Y_val.npy
-      - project_aisc/data/processed/hosono.npy
-      - project_aisc/data/processed/Y_hosono.npy
-      - project_aisc/data/processed/ima.npy
+      #- project_aisc/data/processed/hosono.npy
+      #- project_aisc/data/processed/Y_hosono.npy
+      #- project_aisc/data/processed/ima.npy
   train:
     cmd: python project_aisc/src/laboratory/train_model.py -model ${model name}
     deps:
@@ -35,7 +35,7 @@ stages:
     deps:
       - project_aisc/src/laboratory/evaluate.py
       - active_experiments.json
-      - project_aisc/data/processed/hosono.npy
-      - project_aisc/data/processed/Y_hosono.npy
-      - project_aisc/data/processed/ima.npy
+      #- project_aisc/data/processed/hosono.npy
+      #- project_aisc/data/processed/Y_hosono.npy
+      #- project_aisc/data/processed/ima.npy
     cmd: python project_aisc/src/laboratory/evaluate.py  -problem ${problem} --no-save all

@@ -46,8 +46,15 @@ AISC
   cd project_aisc
 
   #Train and test the model
-  python src/laboratory/train_model.py
-
+  # Pipeline is managed by dvc software. If no dvc file is present execute
+  dvc init
+  
+  # Reproduce pipeline
+  dev repro
+  
+  # DVC skip stages if they are alredy executed. To force again execution of the entire pipeline 
+  dvc repro -f 
+  
   #Produce latent features and inspect them
   python src/laboratory/latent_space.py
 

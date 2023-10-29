@@ -49,14 +49,18 @@ def get_periodictable(max_atomic_number=96, max_missing_value=30):
                                                           )
 
     path = str(pathlib.Path(__file__).parent.parent.parent) + "/data/raw/"
-    features = ['thermal_conductivity', 'specific_heat', 'electron_affinity', 'density']
-    features_and_scale = {'thermal_conductivity': 1, 'specific_heat': 1 / 1000, 'electron_affinity': 1 / 100,
-                          'density': 1 / 1000}
+    try:
+        features = ['thermal_conductivity', 'specific_heat', 'electron_affinity', 'density']
+        features_and_scale = {'thermal_conductivity': 1, 'specific_heat': 1 / 1000, 'electron_affinity': 1 / 100,
+                              'density': 1 / 1000}
 
-    atomic_dataset_dict = _get_external_periodictable_data(path=path, features=features)
+        atomic_dataset_dict = _get_external_periodictable_data(path=path, features=features)
 
-    periodic_table = _merge_periodictable_data(features_and_scale=features_and_scale,
-                                               atomic_dataset_dict=atomic_dataset_dict, periodic_table=periodic_table)
+        periodic_table = _merge_periodictable_data(features_and_scale=features_and_scale,
+                                                   atomic_dataset_dict=atomic_dataset_dict,
+                                                   periodic_table=periodic_table)
+    except FileNotFoundError:
+        print("No additional atomic data found. Skipping to preprocessing steps...")
 
     return periodic_table
 

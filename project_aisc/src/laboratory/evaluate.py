@@ -80,6 +80,12 @@ def main():
         warnings.warn("Problem not specified! Default problem is regression")
         no_save = None
 
+    if problem == "regression":
+        base_data_test_name = 'Supercon'
+    elif problem == "classification":
+        base_data_test_name = 'Supercon + Garbage in'
+
+    print(f"Evaluation model on {base_data_test_name} datase...")
     X_test = list(np.load(home_path + '/data/processed/test/X_test.npy'))
     Y_test = np.load(home_path + '/data/processed/test/Y_test.npy')
 
@@ -96,22 +102,34 @@ def main():
     if no_save is None:
         # Save predictions of the model
         np.save(artifact_uri + "/predictions.npy", tf.reshape(model.predict(X_test), shape=(-1,)).numpy())
+    print(f"Evaluation on {base_data_test_name} dataset completed.")
 
-    X_hosono = list(np.load(home_path + "/data/processed/hosono.npy"))
-    Y_hosono = np.load(home_path + '/data/processed/Y_hosono.npy')
+    try:
+        print("Evaluation on Hosono dataset...")
+        X_hosono = list(np.load(home_path + "/data/processed/hosono.npy"))
+        Y_hosono = np.load(home_path + '/data/processed/Y_hosono.npy')
 
-    Y_hosono_pred = model.predict(X_hosono)
-    metrics = get_metrics(Y_pred=Y_hosono_pred, Y_true=Y_hosono, problem=problem)
-    print("Evaluation on Hosono:")
-    [print(f"{item[0]} : {item[1]}") for item in metrics.items()]
-    [MlflowClient.log_metric(run_id=run_id, key='hosono_' + metric, value=value) for metric, value in metrics.items()]
+        Y_hosono_pred = model.predict(X_hosono)
+        metrics = get_metrics(Y_pred=Y_hosono_pred, Y_true=Y_hosono, problem=problem)
+        print("Evaluation on Hosono:")
+        [print(f"{item[0]} : {item[1]}") for item in metrics.items()]
+        [MlflowClient.log_metric(run_id=run_id, key='hosono_' + metric, value=value) for metric, value in metrics.items()]
+        print(f"Evaluation on Hosono dataset completed.")
+    except FileNotFoundError:
+        print("Hosono data not found. Skipping test on this dataset.")
 
-    X_ima = list(np.load(home_path + "/data/processed/ima.npy"))
-    Y_ima_pred = tf.reshape(model.predict(X_ima), shape=(-1,))
-    if no_save is None:
-        np.save(artifact_uri + "/ima_predictions.npy", tf.reshape(model.predict(X_test), shape=(-1,)).numpy())
+    try:
+        print("Evaluation on IMA dataset...")
+        X_ima = list(np.load(home_path + "/data/processed/ima.npy"))
+        Y_ima_pred = tf.reshape(model.predict(X_ima), shape=(-1,))
+        if no_save is None:
+            np.save(artifact_uri + "/ima_predictions.npy", tf.reshape(model.predict(X_test), shape=(-1,)).numpy())
 
-    print(Y_ima_pred)
+        print(Y_ima_pred)
+        print(f"Evaluation on IMA dataset completed.")
+    except FileNotFoundError:
+        print("IMA data not found. Skipping test on this dataset.")
+
     print(f"run id: {run_id}")
     if no_save == 'model':
         try:
